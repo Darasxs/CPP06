@@ -15,6 +15,9 @@ class ScalarConverter
 	ScalarConverter &operator=(ScalarConverter const &copy);
 	~ScalarConverter(void);
 
+	static bool handlePseudoLiterals(const std::string &literal);
+	static bool handleIfChar(const std::string &literal);
+
   public:
 	static void convert(const std::string &literal);
 };
