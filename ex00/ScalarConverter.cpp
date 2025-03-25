@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/25 13:21:58 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/25 14:33:11 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,29 @@ void ScalarConverter::convert(const std::string &literal)
 		std::cout << "As float: " << static_cast<float>(c) << ".0f" << std::endl;
 		std::cout << "As double: " << static_cast<double>(c) << ".0" << std::endl;
 		return;
+	}
+	
+	if (literal == "nanf" || literal == "nan")
+	{
+		std::cout << "float: nanf" << std::endl;
+		std::cout << "double: nan" << std::endl;
+		return ;
+	}
+	else if (literal == "+inf" || literal == "inf" || literal == "+inff" || literal == "inff")
+	{
+		std::cout << "float: +inff" << std::endl;
+		std::cout << "double: +inf" << std::endl;
+		return ;
+	}
+	else if (literal == "-inf" || literal == "-inff")
+	{
+		std::cout << "float: -inff" << std::endl;
+		std::cout << "double: -inf" << std::endl;
+		return ;
+	}
+
+	try
+	{
+		
 	}
 }
