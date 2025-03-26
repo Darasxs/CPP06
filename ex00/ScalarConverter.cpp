@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/26 17:38:27 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/26 18:49:40 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool ScalarConverter::handlePseudoLiterals(const std::string &literal)
 
 static bool	handleIfChar(const std::string &literal)
 {
-	char	c;
+	char	c;		
 
 	if (literal.length() == 1 && std::isprint(literal[0])
 		&& !std::isdigit(literal[0]))
@@ -91,7 +91,7 @@ void ScalarConverter::convert(const std::string &literal)
 		return ;
 	try
 	{
-		if(literal.find('.') != std::string::npos)
+		if(literal.find('.') != std::string::npos)	
 		{
 			double myDouble = std::stod(literal);
 			std::cout << "The literal is a double: " << myDouble << std::endl;
@@ -99,18 +99,44 @@ void ScalarConverter::convert(const std::string &literal)
 			if(myDouble > std::numeric_limits<int>::min() && myDouble < std::numeric_limits<int>::max())
 			{
 				std::cout << "as int: " << static_cast<int>(myDouble) << std::endl;
-				
+				if(myDouble > std::numeric_limits<char>::min() && myDouble < std::numeric_limits<char>::max())
+					std::cout << "as char: " << static_cast<char>(myDouble) << std::endl;
+				else
+					std::cout << "Conversion to char is not possible." << std::endl;
+			}
+			else
+			{
+				std::cout << "Conversion to int is not possible." << std::endl;
+				std::cout << "Conversion to char is not possible." << std::endl;
 			}
 		}
 		else if(literal.find('f') != std::string::npos)
 		{
 			float myFloat = std::stof(literal);
 			std::cout << "The literal is a float: " << myFloat << "f" << std::endl;
+			if(myFloat > std::numeric_limits<int>::min() && myFloat < std::numeric_limits<int>::max())
+			{
+				std::cout << "as int: " << static_cast<int>(myFloat) << std::endl;
+				if(myFloat > std::numeric_limits<char>::min() && myFloat < std::numeric_limits<char>::max())
+					std::cout << "as char: " << static_cast<char>(myFloat) << std::endl;
+				else
+					std::cout << "Conversion to char is not possible." << std::endl;
+			}
+			else
+			{
+				std::cout << "Conversion to int is not possible." << std::endl;
+				std::cout << "Conversion to char is not possible." << std::endl;
+			}
+			
 		}
 		else if(literal.find('.')  == std::string::npos && literal.find('f') == std::string::npos)
 		{
 			int myInt = std::stoi(literal);
 			std::cout << "The literal is an int: " << myInt << std::endl;
+			if(myInt > std::numeric_limits<char>::min() && myInt < std::numeric_limits<char>::max())
+				std::cout << "as char: " << static_cast<char>(myInt) << std::endl;
+			else
+				std::cout << "Conversion to char is not possible." << std::endl;
 		}
 	}
 	catch (const std::exception &e)
