@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/25 14:52:15 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:38:27 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ bool ScalarConverter::handlePseudoLiterals(const std::string &literal)
 {
 	if (literal == "nanf" || literal == "nan")
 	{
+		std::cout << "Conversion to char is not possible." << std::endl;
+		std::cout << "Conversion to int is not possible." << std::endl;
 		std::cout << "float: nanf" << std::endl;
 		std::cout << "double: nan" << std::endl;
 		return (true);
@@ -42,12 +44,16 @@ bool ScalarConverter::handlePseudoLiterals(const std::string &literal)
 	else if (literal == "+inf" || literal == "inf" || literal == "+inff"
 		|| literal == "inff")
 	{
+		std::cout << "Conversion to char is not possible." << std::endl;
+		std::cout << "Conversion to int is not possible." << std::endl;
 		std::cout << "float: +inff" << std::endl;
 		std::cout << "double: +inf" << std::endl;
 		return (true);
 	}
 	else if (literal == "-inf" || literal == "-inff")
 	{
+		std::cout << "Conversion to char is not possible." << std::endl;
+		std::cout << "Conversion to int is not possible." << std::endl;
 		std::cout << "float: -inff" << std::endl;
 		std::cout << "double: -inf" << std::endl;
 		return (true);
@@ -85,6 +91,30 @@ void ScalarConverter::convert(const std::string &literal)
 		return ;
 	try
 	{
-		
+		if(literal.find('.') != std::string::npos)
+		{
+			double myDouble = std::stod(literal);
+			std::cout << "The literal is a double: " << myDouble << std::endl;
+			std::cout << "as float: " << static_cast<float>(myDouble) << "f" << std::endl;
+			if(myDouble > std::numeric_limits<int>::min() && myDouble < std::numeric_limits<int>::max())
+			{
+				std::cout << "as int: " << static_cast<int>(myDouble) << std::endl;
+				
+			}
+		}
+		else if(literal.find('f') != std::string::npos)
+		{
+			float myFloat = std::stof(literal);
+			std::cout << "The literal is a float: " << myFloat << "f" << std::endl;
+		}
+		else if(literal.find('.')  == std::string::npos && literal.find('f') == std::string::npos)
+		{
+			int myInt = std::stoi(literal);
+			std::cout << "The literal is an int: " << myInt << std::endl;
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cout << "Error. Invalid literal." << std::endl;
 	}
 }
