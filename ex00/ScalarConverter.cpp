@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/27 12:59:20 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/27 13:25:22 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ static bool	isValidLiteral(const std::string &literal)
 
 	dotCounter = 0;
 	fCounter = 0;
-	for (int i = 0; i < literal.length(); i++)
+	invalidCounter = 0;
+	for (size_t i = 0; i < literal.length(); i++)
 	{
 		if (i == 0 && (literal[i] == '-' || literal[i] == '+'))
 			continue ;
@@ -142,24 +143,27 @@ void ScalarConverter::convert(const std::string &literal)
 		return ;
 	try
 	{
-		if (literal.find('.') != std::string::npos)
+		if (literal.find('f') != std::string::npos)
+		{
+			myFloat = std::stof(literal);
+			std::cout << "The literal is a float: " << myFloat << ".0f" << std::endl;
+			std::cout << "as double: " << static_cast<double>(myFloat) << std::endl;
+			printIntChar(myFloat);
+		}
+		else if (literal.find('.') != std::string::npos)
 		{
 			myDouble = std::stod(literal);
 			std::cout << "The literal is a double: " << myDouble << std::endl;
-			std::cout << "as float: " << static_cast<float>(myDouble) << "f" << std::endl;
+			std::cout << "as float: " << static_cast<float>(myDouble) << ".0f" << std::endl;
 			printIntChar(myDouble);
-		}
-		else if (literal.find('f') != std::string::npos)
-		{
-			myFloat = std::stof(literal);
-			std::cout << "The literal is a float: " << myFloat << "f" << std::endl;
-			printIntChar(myFloat);
 		}
 		else if (literal.find('.') == std::string::npos
 			&& literal.find('f') == std::string::npos)
 		{
 			myInt = std::stoi(literal);
 			std::cout << "The literal is an int: " << myInt << std::endl;
+			std::cout << "as float: " << static_cast<float>(myInt) << ".0f" << std::endl;
+			std::cout << "as double: " << static_cast<double>(myInt) << std::endl;
 			printIntChar(myInt);
 		}
 	}
