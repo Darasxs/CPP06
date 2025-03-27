@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/27 13:25:22 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/27 13:44:44 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ static bool	isValidLiteral(const std::string &literal)
 			continue ;
 		if (literal[i] == '.')
 			dotCounter++;
+		if (literal[i] == '.' && (i + 1 >= literal.length() || !std::isdigit(literal[i + 1])))
+			return (false);
 		if (literal[i] == 'f')
 			fCounter++;
 		if (literal[i] != '.' && literal[i] != 'f' && !std::isdigit(literal[i]))
