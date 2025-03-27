@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/27 12:24:12 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/27 12:59:20 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ ScalarConverter::~ScalarConverter(void)
 {
 }
 
-static bool handlePseudoLiterals(const std::string &literal)
+static bool	handlePseudoLiterals(const std::string &literal)
 {
 	if (literal == "nanf" || literal == "nan")
 	{
@@ -78,9 +78,10 @@ static bool	handleIfChar(const std::string &literal)
 	return (false);
 }
 
-static void printIntChar(double value)
+static void	printIntChar(double value)
 {
-	if (value > std::numeric_limits<int>::min() && value < std::numeric_limits<int>::max())
+	if (value > std::numeric_limits<int>::min()
+		&& value < std::numeric_limits<int>::max())
 	{
 		std::cout << "as int: " << static_cast<int>(value) << std::endl;
 		if (value > 31 && value < 127)
@@ -95,8 +96,36 @@ static void printIntChar(double value)
 	}
 }
 
+static bool	isValidLiteral(const std::string &literal)
+{
+	int	dotCounter;
+	int	fCounter;
+	int invalidCounter;
+
+	dotCounter = 0;
+	fCounter = 0;
+	for (int i = 0; i < literal.length(); i++)
+	{
+		if (i == 0 && (literal[i] == '-' || literal[i] == '+'))
+			continue ;
+		if (literal[i] == '.')
+			dotCounter++;
+		if (literal[i] == 'f')
+			fCounter++;
+		if (literal[i] != '.' && literal[i] != 'f' && !std::isdigit(literal[i]))
+			invalidCounter++;
+	}
+	if (dotCounter > 1 || fCounter > 1 || invalidCounter > 0)
+		return (false);
+	return (true);
+}
+
 void ScalarConverter::convert(const std::string &literal)
 {
+	double	myDouble;
+	float	myFloat;
+	int		myInt;
+
 	if (literal.empty())
 	{
 		std::cout << "The literal input is empty." << std::endl;
@@ -104,30 +133,33 @@ void ScalarConverter::convert(const std::string &literal)
 	}
 	if (handleIfChar(literal))
 		return ;
+	if(!isValidLiteral(literal))
+	{
+		std::cout << "Error. Invalid literal." << std::endl;
+		return ;
+	}
 	if (handlePseudoLiterals(literal))
 		return ;
 	try
 	{
-		if(literal.find('.') != std::string::npos)
+		if (literal.find('.') != std::string::npos)
 		{
-			double myDouble = std::stod(literal);
+			myDouble = std::stod(literal);
 			std::cout << "The literal is a double: " << myDouble << std::endl;
-			std::cout << "as float: " << static_cast<float>(myDouble) << ".0f" << std::endl;
+			std::cout << "as float: " << static_cast<float>(myDouble) << "f" << std::endl;
 			printIntChar(myDouble);
 		}
-		else if(literal.find('f') != std::string::npos)
+		else if (literal.find('f') != std::string::npos)
 		{
-			float myFloat = std::stof(literal);
-			std::cout << "The literal is a float: " << myFloat << ".0f" << std::endl;
-			std::cout << "as double: " << static_cast<double>(myFloat) << std::endl;
+			myFloat = std::stof(literal);
+			std::cout << "The literal is a float: " << myFloat << "f" << std::endl;
 			printIntChar(myFloat);
 		}
-		else if(literal.find('.')  == std::string::npos && literal.find('f') == std::string::npos)
+		else if (literal.find('.') == std::string::npos
+			&& literal.find('f') == std::string::npos)
 		{
-			int myInt = std::stoi(literal);
+			myInt = std::stoi(literal);
 			std::cout << "The literal is an int: " << myInt << std::endl;
-			std::cout << "as float: " << static_cast<float>(myInt) << ".0f" << std::endl;
-			std::cout << "as double: " << static_cast<double>(myInt) << std::endl;
 			printIntChar(myInt);
 		}
 	}
