@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 00:39:25 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/27 13:44:44 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/27 14:07:41 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static bool	isValidLiteral(const std::string &literal)
 {
 	int	dotCounter;
 	int	fCounter;
-	int invalidCounter;
+	int	invalidCounter;
 
 	dotCounter = 0;
 	fCounter = 0;
@@ -111,7 +111,8 @@ static bool	isValidLiteral(const std::string &literal)
 			continue ;
 		if (literal[i] == '.')
 			dotCounter++;
-		if (literal[i] == '.' && (i + 1 >= literal.length() || !std::isdigit(literal[i + 1])))
+		if (literal[i] == '.' && (i + 1 >= literal.length()
+				|| !std::isdigit(literal[i + 1])))
 			return (false);
 		if (literal[i] == 'f')
 			fCounter++;
@@ -136,7 +137,7 @@ void ScalarConverter::convert(const std::string &literal)
 	}
 	if (handleIfChar(literal))
 		return ;
-	if(!isValidLiteral(literal))
+	if (!isValidLiteral(literal))
 	{
 		std::cout << "Error. Invalid literal." << std::endl;
 		return ;
@@ -147,6 +148,8 @@ void ScalarConverter::convert(const std::string &literal)
 	{
 		if (literal.find('f') != std::string::npos)
 		{
+			if(literal.find('.') == std::string::npos)
+				throw std::invalid_argument("Invalid float literal.");
 			myFloat = std::stof(literal);
 			std::cout << "The literal is a float: " << myFloat << ".0f" << std::endl;
 			std::cout << "as double: " << static_cast<double>(myFloat) << std::endl;
@@ -156,7 +159,10 @@ void ScalarConverter::convert(const std::string &literal)
 		{
 			myDouble = std::stod(literal);
 			std::cout << "The literal is a double: " << myDouble << std::endl;
-			std::cout << "as float: " << static_cast<float>(myDouble) << ".0f" << std::endl;
+			if (myDouble != static_cast<int>(myDouble))
+				std::cout << "as float: " << static_cast<float>(myDouble) << "f" << std::endl;
+			else
+				std::cout << "as float: " << static_cast<float>(myDouble) << ".0f" << std::endl;
 			printIntChar(myDouble);
 		}
 		else if (literal.find('.') == std::string::npos
@@ -169,8 +175,20 @@ void ScalarConverter::convert(const std::string &literal)
 			printIntChar(myInt);
 		}
 	}
+	catch (const std::out_of_range &e)
+	{
+		std::cout << "Error. Out of range." << std::endl;
+	}
+	catch (const std::invalid_argument &e)
+	{
+		std::cout << "Error. Invalid literal: " << e.what() << std::endl;
+	}
 	catch (const std::exception &e)
 	{
 		std::cout << "Error. Invalid literal." << std::endl;
+	}
+	catch (...)
+	{
+		std::cout << "Error. Unknown error." << std::endl;
 	}
 }
