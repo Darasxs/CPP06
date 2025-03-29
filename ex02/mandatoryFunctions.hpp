@@ -1,10 +1,10 @@
 #ifndef MANDATORYFUNCTIONS_HPP
 # define MANDATORYFUNCTIONS_HPP
 
-# include "A.hpp"
-# include "B.hpp"
+# include "classA.hpp"
+# include "classB.hpp"
+# include "classC.hpp"
 # include "Base.hpp"
-# include "C.hpp"
 # include <iostream>
 # include <string>
 

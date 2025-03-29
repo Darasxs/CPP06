@@ -6,7 +6,7 @@
 /*   By: dpaluszk <dpaluszk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 16:51:45 by dpaluszk          #+#    #+#             */
-/*   Updated: 2025/03/29 14:43:27 by dpaluszk         ###   ########.fr       */
+/*   Updated: 2025/03/29 14:55:16 by dpaluszk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,23 @@ void	identify(Base *p)
 
 void	identify(Base &p)
 {
-	try
-	{
+	try {
 		(void)dynamic_cast<A&>(p);
 		std::cout << "Class A object." << std::endl;
-	}
-	catch (std::bad_cast &){}
-	
-	try
-	{
+		return;
+	} catch (std::bad_cast &) {}
+
+	try {
 		(void)dynamic_cast<B&>(p);
 		std::cout << "Class B object." << std::endl;
-	}
-	catch (std::bad_cast &) {}
-	
-	try
-	{
+		return;
+	} catch (std::bad_cast &) {}
+
+	try {
 		(void)dynamic_cast<C&>(p);
 		std::cout << "Class C object." << std::endl;
-	}
-	catch (std::bad_cast &) {}
+		return;
+	} catch (std::bad_cast &) {}
+
+	std::cout << "Unknown" << std::endl;
 }
